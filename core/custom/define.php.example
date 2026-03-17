@@ -18,5 +18,6 @@
  *      - MODX_SANITIZE_SEED
  *      - NO_SESSION
  *  - custom
+ *      - DEPLOY_PULL_SECRET
  *      - TEMPLATE_REGISTRY_ACCESS_TOKEN
  */
