@@ -9,6 +9,11 @@
       'client_client_company_name' => evo()->getConfig('client_client_company_name'),
       'client_phone' => evo()->getConfig('client_phone'),
       'client_client_phone' => evo()->getConfig('client_client_phone'),
+      'portfolioItemsVar' => $portfolioItems ?? null,
+      'portfolio_item_output' => evo()->getTemplateVarOutput('portfolio_item', evo()->documentIdentifier),
+      'portfolio-item_output' => evo()->getTemplateVarOutput('portfolio-item', evo()->documentIdentifier),
+      'document_portfolio_item' => evo()->documentObject['portfolio_item'] ?? null,
+      'document_portfolio-item' => evo()->documentObject['portfolio-item'] ?? null,
     ])
   @endphp
   <meta charset="UTF-8">
