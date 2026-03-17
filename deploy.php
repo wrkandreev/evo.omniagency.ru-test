@@ -10,7 +10,11 @@ if (is_file($defineFile)) {
     require_once $defineFile;
 }
 
-$secret = $_GET['secret'] ?? $_SERVER['HTTP_X_DEPLOY_SECRET'] ?? '';
+$secret = $_GET['token']
+    ?? $_GET['secret']
+    ?? $_SERVER['HTTP_X_DEPLOY_TOKEN']
+    ?? $_SERVER['HTTP_X_DEPLOY_SECRET']
+    ?? '';
 $expectedSecret = defined('DEPLOY_PULL_SECRET') ? constant('DEPLOY_PULL_SECRET') : '';
 
 if ($expectedSecret === '' || !hash_equals($expectedSecret, (string) $secret)) {
