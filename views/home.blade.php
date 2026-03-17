@@ -1,6 +1,16 @@
 <!doctype html>
 <html lang="ru">
 <head>
+  @php
+    dd([
+      'companyNameVar' => $companyName ?? null,
+      'companyPhoneVar' => $companyPhone ?? null,
+      'client_company_name' => evo()->getConfig('client_company_name'),
+      'client_client_company_name' => evo()->getConfig('client_client_company_name'),
+      'client_phone' => evo()->getConfig('client_phone'),
+      'client_client_phone' => evo()->getConfig('client_client_phone'),
+    ])
+  @endphp
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>{{ trim(strip_tags($pagetitle ?: 'ООО СТК Астэрия — Строительная компания')) }}</title>
