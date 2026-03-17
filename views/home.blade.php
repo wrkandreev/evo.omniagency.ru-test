@@ -30,7 +30,7 @@
         <a href="#projects">Объекты</a>
         <a href="#contact">Контакты</a>
       </nav>
-      <a class="btn btn-tonal" href="tel:+79103902890">Позвонить</a>
+      <a class="btn btn-tonal" href="tel:{{ $companyPhoneHref ?: '+79103902890' }}">Позвонить</a>
     </div>
   </header>
 
@@ -186,8 +186,8 @@
           <p>Расскажите задачу, и мы предложим оптимальный путь реализации с понятными этапами и сроками.</p>
         </div>
         <div class="contact-items">
-          <a class="contact-link" href="tel:+79103902890">+7 (910) 390-28-90</a>
-          <p>ООО «СТК Астэрия»</p>
+          <a class="contact-link" href="tel:{{ $companyPhoneHref ?: '+79103902890' }}">{{ $companyPhone ?: '+7 (910) 390-28-90' }}</a>
+          <p>{{ $companyName ?: 'ООО «СТК Астэрия»' }}</p>
           <p>Директор: Сесин Александр Владимирович</p>
           <p>ИНН/КПП: 5258104853 / 525801001</p>
           <p>Адрес: г. Нижний Новгород, ул. Республиканская, 24В</p>
@@ -195,6 +195,18 @@
       </article>
     </section>
   </main>
+
+  <footer class="container section">
+    <article class="surface contact-card">
+      <div>
+        <p class="eyebrow">Футер</p>
+        <h2>{{ $companyName ?: 'ООО «СТК Астэрия»' }}</h2>
+      </div>
+      <div class="contact-items">
+        <a class="contact-link" href="tel:{{ $companyPhoneHref ?: '+79103902890' }}">{{ $companyPhone ?: '+7 (910) 390-28-90' }}</a>
+      </div>
+    </article>
+  </footer>
 
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <button class="lightbox-close" id="lightboxClose" aria-label="Закрыть">x</button>
