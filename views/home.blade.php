@@ -19,7 +19,7 @@
     <div class="container nav-wrap">
       <a href="#top" class="brand">
         <span class="brand-mark">А</span>
-        <span class="brand-text">СТК Астэрия</span>
+        <span class="brand-text">{{ $companyName ?: 'СТК Астэрия' }}</span>
       </a>
       <button class="menu-btn" id="menuBtn" aria-label="Открыть меню" aria-expanded="false">
         <span></span><span></span><span></span>
@@ -49,7 +49,7 @@
           <p class="stat-label">лет опыта и экспертизы</p>
         </article>
         <article class="surface stat-card">
-          <p class="stat-value" data-counter="6">0</p>
+          <p class="stat-value" data-counter="{{ $portfolioCount ?: 0 }}">0</p>
           <p class="stat-label">ключевых объектов в портфолио</p>
         </article>
         <article class="surface stat-card">
@@ -135,78 +135,49 @@
       </div>
 
       <div class="project-grid" id="projectGrid">
-        <figure class="surface project" data-type="residential">
-          <picture>
-            <source srcset="/html/images/zhk-prioksky.webp" type="image/webp">
+        @forelse ($portfolioItems ?? [] as $index => $item)
+          <figure class="surface project" data-type="{{ $item['type'] }}">
+            @if (!empty($item['image']))
+              <img src="/{{ ltrim($item['image'], '/') }}" alt="{{ $item['title'] }}" loading="{{ $index === 0 ? 'eager' : 'lazy' }}" @if ($index === 0) fetchpriority="high" @endif decoding="async">
+            @endif
+            <figcaption>{{ $item['title'] }}</figcaption>
+          </figure>
+        @empty
+          <figure class="surface project" data-type="residential">
             <img src="/html/images/zhk-prioksky.jpg" alt="ЖК Приокский" loading="eager" fetchpriority="high" decoding="async">
-          </picture>
-          <figcaption>ЖК Приокский</figcaption>
-        </figure>
-        <figure class="surface project" data-type="residential">
-          <picture>
-            <source srcset="/html/images/zhk-gelios.webp" type="image/webp">
-            <img src="/html/images/zhk-gelios.jpg" alt="ЖК Гелиос" loading="lazy" decoding="async">
-          </picture>
-          <figcaption>ЖК Гелиос</figcaption>
-        </figure>
-        <figure class="surface project" data-type="commercial">
-          <picture>
-            <source srcset="/html/images/prospekt-geroev.webp" type="image/webp">
-            <img src="/html/images/prospekt-geroev.jpg" alt="Объект на проспекте Героев" loading="lazy" decoding="async">
-          </picture>
-          <figcaption>Проспект Героев</figcaption>
-        </figure>
-        <figure class="surface project" data-type="private">
-          <picture>
-            <source srcset="/html/images/chastny-dom.webp" type="image/webp">
-            <img src="/html/images/chastny-dom.jpg" alt="Частный дом" loading="lazy" decoding="async">
-          </picture>
-          <figcaption>Частный дом</figcaption>
-        </figure>
+            <figcaption>Заполните MultiTV `portfolio-item` в админке</figcaption>
+          </figure>
+        @endforelse
       </div>
 
       <article class="surface project-list">
         <h3>Участвовали в строительстве</h3>
         <ul>
-          <li>ЖК Приокский, ул. Маршала Жукова, д. 8к1</li>
-          <li>ЖК Солнечный, ул. Композитора Касьянова, д. 13к1 и 13к2</li>
-          <li>ЖК Гелиос, ул. Композитора Касьянова, д. 11</li>
-          <li>Коммерческое здание, проспект Героев, 23А</li>
-          <li>Здание под магазин, г. Кстово, ул. Советская, 30</li>
-          <li>ИЖС и частные проекты, строительство коттеджей премиум-класса</li>
+          @forelse ($portfolioItems ?? [] as $item)
+            <li>{{ $item['title'] }} — {{ $item['type_label'] }}</li>
+          @empty
+            <li>Добавьте объекты в TV `portfolio-item` в админке.</li>
+          @endforelse
         </ul>
       </article>
     </section>
 
-    <section class="container section reveal" id="contact">
+    <footer class="container section reveal" id="contact">
       <article class="surface contact-card">
         <div>
           <p class="eyebrow">Связь</p>
-          <h2>Обсудим ваш объект</h2>
+          <h2>{{ $companyName ?: 'ООО «СТК Астэрия»' }}</h2>
           <p>Расскажите задачу, и мы предложим оптимальный путь реализации с понятными этапами и сроками.</p>
         </div>
         <div class="contact-items">
           <a class="contact-link" href="tel:{{ $companyPhoneHref ?: '+79103902890' }}">{{ $companyPhone ?: '+7 (910) 390-28-90' }}</a>
-          <p>{{ $companyName ?: 'ООО «СТК Астэрия»' }}</p>
           <p>Директор: Сесин Александр Владимирович</p>
           <p>ИНН/КПП: 5258104853 / 525801001</p>
           <p>Адрес: г. Нижний Новгород, ул. Республиканская, 24В</p>
         </div>
       </article>
-    </section>
+    </footer>
   </main>
-
-  <footer class="container section">
-    <article class="surface contact-card">
-      <div>
-        <p class="eyebrow">Футер</p>
-        <h2>{{ $companyName ?: 'ООО «СТК Астэрия»' }}</h2>
-      </div>
-      <div class="contact-items">
-        <a class="contact-link" href="tel:{{ $companyPhoneHref ?: '+79103902890' }}">{{ $companyPhone ?: '+7 (910) 390-28-90' }}</a>
-      </div>
-    </article>
-  </footer>
 
   <div class="lightbox" id="lightbox" aria-hidden="true">
     <button class="lightbox-close" id="lightboxClose" aria-label="Закрыть">x</button>

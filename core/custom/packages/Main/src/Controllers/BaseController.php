@@ -43,4 +43,22 @@ class BaseController extends TemplateController
     {
         return trim((string) \evo()->getConfig($key, ''));
     }
+
+    protected function getMultiTvValue(string $key): array
+    {
+        $raw = \evo()->getTemplateVarOutput($key, $this->docid)[$key] ?? '';
+
+        if ($raw === '' && isset(\evo()->documentObject[$key])) {
+            $raw = \evo()->documentObject[$key];
+
+            if (is_array($raw)) {
+                $raw = $raw[1] ?? $raw[0] ?? '';
+            }
+        }
+
+        $decoded = json_decode((string) $raw, true);
+        $items = $decoded['fieldValue'] ?? [];
+
+        return is_array($items) ? $items : [];
+    }
 }
