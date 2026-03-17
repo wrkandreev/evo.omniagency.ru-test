@@ -2,19 +2,26 @@
 <html lang="ru">
 <head>
   @php
-    dd([
-      'companyNameVar' => $companyName ?? null,
-      'companyPhoneVar' => $companyPhone ?? null,
-      'client_company_name' => evo()->getConfig('client_company_name'),
-      'client_client_company_name' => evo()->getConfig('client_client_company_name'),
-      'client_phone' => evo()->getConfig('client_phone'),
-      'client_client_phone' => evo()->getConfig('client_client_phone'),
-      'portfolioItemsVar' => $portfolioItems ?? null,
-      'portfolio_item_output' => evo()->getTemplateVarOutput('portfolio_item', evo()->documentIdentifier),
-      'portfolio-item_output' => evo()->getTemplateVarOutput('portfolio-item', evo()->documentIdentifier),
-      'document_portfolio_item' => evo()->documentObject['portfolio_item'] ?? null,
-      'document_portfolio-item' => evo()->documentObject['portfolio-item'] ?? null,
-    ])
+    $companyName = trim((string) (($companyName ?? '') ?: evo()->getConfig('client_client_company_name') ?: evo()->getConfig('client_company_name')));
+    $companyPhone = trim((string) (($companyPhone ?? '') ?: evo()->getConfig('client_client_phone') ?: evo()->getConfig('client_phone')));
+    $companyPhoneHref = preg_replace('/[^\d+]/', '', $companyPhone ?: '+79103902890');
+
+    $portfolioItems = $portfolioItems ?? null;
+
+    if (!is_array($portfolioItems)) {
+        $portfolioRaw = evo()->getTemplateVarOutput('portfolio-item', evo()->documentIdentifier)['portfolio-item'] ?? '';
+
+        if ($portfolioRaw === '' && isset(evo()->documentObject['portfolio-item'])) {
+            $portfolioRaw = evo()->documentObject['portfolio-item'][1] ?? evo()->documentObject['portfolio-item'][0] ?? '';
+        }
+
+        $portfolioDecoded = json_decode((string) $portfolioRaw, true);
+        $portfolioItems = array_values(array_filter($portfolioDecoded['fieldValue'] ?? [], function ($item) {
+            return is_array($item) && !empty(trim((string) ($item['title'] ?? '')));
+        }));
+    }
+
+    $portfolioCount = count($portfolioItems);
   @endphp
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
