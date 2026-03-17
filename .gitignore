@@ -1,0 +1,42 @@
+# OS files
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Editors and IDEs
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Logs and temp
+*.log
+*.tmp
+*.bak
+
+# Environment and local secrets
+.env
+.env.*
+!.env.example
+core/custom/define.php
+!core/custom/define.php.example
+
+# Composer and npm local artifacts
+vendor/
+node_modules/
+core/vendor/
+
+# Evo core kept outside this repository
+core/*
+!core/custom/
+!core/custom/**
+
+# Evo and project runtime cache
+assets/cache/*
+!assets/cache/.gitignore
+core/cache/*
+!core/cache/.gitignore
+
+# Session and generated runtime files
+assets/export/*
+assets/import/*

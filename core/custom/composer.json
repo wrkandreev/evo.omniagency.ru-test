@@ -1,0 +1,11 @@
+{
+    "name": "evolutioncms/custom",
+    "require": {
+        "wrkandreev/evocms-template-registry": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "EvolutionCMS\\Main\\": "packages/Main/src/"
+        }
+    }
+}

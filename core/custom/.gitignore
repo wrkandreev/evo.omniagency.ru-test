@@ -1,0 +1,5 @@
+define.php
+.env
+.env.*
+!.env.example
+!.env.docker.example
