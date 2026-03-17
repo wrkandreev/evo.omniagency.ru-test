@@ -4,6 +4,12 @@ declare(strict_types=1);
 
 header('Content-Type: text/plain; charset=UTF-8');
 
+$defineFile = __DIR__ . '/core/custom/define.php';
+
+if (is_file($defineFile)) {
+    require_once $defineFile;
+}
+
 $secret = $_GET['secret'] ?? $_SERVER['HTTP_X_DEPLOY_SECRET'] ?? '';
 $expectedSecret = defined('DEPLOY_PULL_SECRET') ? constant('DEPLOY_PULL_SECRET') : '';
 
