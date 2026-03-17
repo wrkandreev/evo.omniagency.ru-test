@@ -41,18 +41,52 @@ class BaseController extends TemplateController
 
     protected function getConfigValue(string $key): string
     {
-        return trim((string) \evo()->getConfig($key, ''));
+        $candidates = [$key];
+
+        if (strpos($key, 'client_') === 0) {
+            $candidates[] = 'client_' . $key;
+        }
+
+        foreach (array_unique($candidates) as $candidate) {
+            $value = trim((string) \evo()->getConfig($candidate, ''));
+
+            if ($value !== '') {
+                return $value;
+            }
+        }
+
+        return '';
     }
 
     protected function getMultiTvValue(string $key): array
     {
-        $raw = \evo()->getTemplateVarOutput($key, $this->docid)[$key] ?? '';
+        $raw = '';
+        $keys = array_unique([$key, str_replace('-', '_', $key)]);
 
-        if ($raw === '' && isset(\evo()->documentObject[$key])) {
-            $raw = \evo()->documentObject[$key];
+        foreach ($keys as $candidate) {
+            $output = \evo()->getTemplateVarOutput($candidate, $this->docid);
 
-            if (is_array($raw)) {
-                $raw = $raw[1] ?? $raw[0] ?? '';
+            if (!empty($output[$candidate])) {
+                $raw = $output[$candidate];
+                break;
+            }
+        }
+
+        if ($raw === '') {
+            foreach ($keys as $candidate) {
+                if (!isset(\evo()->documentObject[$candidate])) {
+                    continue;
+                }
+
+                $raw = \evo()->documentObject[$candidate];
+
+                if (is_array($raw)) {
+                    $raw = $raw[1] ?? $raw[0] ?? '';
+                }
+
+                if ($raw !== '') {
+                    break;
+                }
             }
         }
 
